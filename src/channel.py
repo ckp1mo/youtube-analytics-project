@@ -31,6 +31,10 @@ class Channel:
         return youtube
 
     def to_json(self, file_name):
+        """
+        Конструктор для создания словаря с атрибутами канала.
+        Конвертирование в json словарь, создание и запись в файл.
+        """
         outpath = Path.cwd() / file_name
         channel_value = {
             'channel_id': self.__channel_id,
