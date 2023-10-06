@@ -10,17 +10,25 @@ class Video:
     Класс для видео ютубканала
     """
     def __init__(self, video_id):
-        self.__video_id = video_id
-        self.info = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                          id=video_id).execute()
-        self.video_title = self.info['items'][0]['snippet']['title']
-        self.view_count = self.info['items'][0]['statistics']['viewCount']
-        self.like_count = self.info['items'][0]['statistics']['likeCount']
-        self.comment_count = self.info['items'][0]['statistics']['commentCount']
-        self.video_url = f'https://www.youtube.com/watch?v={video_id}'
-
+        try:
+            self.__video_id = video_id
+            self.info = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                              id=video_id).execute()
+            if len(self.info['items']) == 0:
+                self.title = None
+                self.view_count = None
+                self.like_count = None
+                self.comment_count = None
+                self.video_url = None
+            self.title = self.info['items'][0]['snippet']['title']
+            self.view_count = self.info['items'][0]['statistics']['viewCount']
+            self.like_count = self.info['items'][0]['statistics']['likeCount']
+            self.comment_count = self.info['items'][0]['statistics']['commentCount']
+            self.video_url = f'https://www.youtube.com/watch?v={video_id}'
+        except IndexError:
+            print('Несуществующий id видео')
     def __str__(self):
-        return f"{self.video_title}"
+        return f"{self.title}"
 
     @property
     def video_id(self):
